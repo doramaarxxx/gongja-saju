@@ -3,6 +3,7 @@ import { X, Menu, Star, Sparkles, Heart, DollarSign, User } from 'lucide-react';
 import Sidebar from './Sidebar';
 import { getImageUrl } from '../lib/storage';
 import masterCharacter from '../assets/master-character.png';
+import { useAuth } from '../hooks/useAuth';
 
 interface MainScreenProps {
   onStartFortune: () => void;
@@ -13,6 +14,7 @@ interface MainScreenProps {
 export default function MainScreen({ onStartFortune, onViewRecords, onViewSettings }: MainScreenProps) {
   const [showPopup, setShowPopup] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { user } = useAuth();
 
   const fortuneCards = [
     { 
@@ -98,7 +100,15 @@ export default function MainScreen({ onStartFortune, onViewRecords, onViewSettin
             <div className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-4 mx-4 shadow-xl">
               <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-white/95 rotate-45"></div>
               <p className="text-gray-800 font-medium text-sm leading-relaxed">
-                안녕하세요! 저는 공자 사주의 마스터입니다.<br />
+                {user ? (
+                  <>
+                    안녕하세요 {user.user_metadata?.name || user.email?.split('@')[0] || '회원'}님, 저는 공자 사주의 마스터입니다.<br />
+                  </>
+                ) : (
+                  <>
+                    안녕하세요. 저는 공자 사주의 마스터입니다.<br />
+                  </>
+                )}
                 <span className="text-purple-600 font-semibold">정확하고 깊이 있는 사주 분석</span>으로<br />
                 여러분의 운명을 밝혀드리겠습니다.
               </p>
