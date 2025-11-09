@@ -68,26 +68,7 @@ function App() {
       // Generate fortune result using OpenAI API
       const result = await generateFortune(input);
       
-      // Save to database with user_id if user is logged in
-      const { error } = await supabase
-        .from('saju_results')
-        .insert({
-          user_id: user?.id || null,
-          name: input.name,
-          gender: input.gender,
-          birth_year: input.birthYear,
-          birth_month: input.birthMonth,
-          birth_day: input.birthDay,
-          birth_time: input.birthTime,
-          lunar_calendar: input.lunarCalendar,
-          fortune_result: result
-        });
-
-      if (error) {
-        console.error('Error saving fortune result:', error);
-        // Still show result even if saving fails
-      }
-
+      // FortuneResult 컴포넌트에서 자동으로 저장하므로 여기서는 저장하지 않음
       setSajuInput(input);
       setFortuneResult(result);
       setCurrentScreen('result');

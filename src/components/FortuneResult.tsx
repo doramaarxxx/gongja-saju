@@ -278,15 +278,15 @@ export default function FortuneResult({ result, input, onNewReading, onViewDetai
     }
   }, [user, sajuRecordId, hasProcessedPendingSave]); // sajuRecordId 추가
 
-  // 사주 결과가 생성될 때 자동으로 익명 레코드 생성
+  // 사주 결과가 생성될 때 자동으로 레코드 생성 (익명 또는 로그인 사용자)
   useEffect(() => {
-    if (result && input && !sajuRecordId && !user) {
-      const saveAnonymousRecord = async () => {
+    if (result && input && !sajuRecordId) {
+      const saveRecord = async () => {
         try {
           const { data, error } = await supabase
             .from('saju_results')
             .insert({
-              user_id: null, // 익명 레코드
+              user_id: user?.id || null, // 로그인 사용자면 user_id, 아니면 null
               name: input.name,
               gender: input.gender,
               birth_year: input.birthYear,
@@ -302,12 +302,15 @@ export default function FortuneResult({ result, input, onNewReading, onViewDetai
           if (error) throw error;
 
           setSajuRecordId(data.id);
+          if (user) {
+            setIsSaved(true); // 로그인 사용자는 바로 저장된 상태로 표시
+          }
         } catch (error) {
-          console.error('Error creating anonymous record:', error);
+          console.error('Error creating saju record:', error);
         }
       };
 
-      saveAnonymousRecord();
+      saveRecord();
     }
   }, [result, input, sajuRecordId, user]);
 
