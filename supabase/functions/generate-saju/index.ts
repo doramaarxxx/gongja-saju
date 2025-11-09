@@ -18,18 +18,26 @@ serve(async (req) => {
     const { name, gender, birthYear, birthMonth, birthDay, birthTime, lunarCalendar } = await req.json()
 
     // OpenAI API 호출
+    const apiKey = Deno.env.get('OPENAI_API_KEY')
+    console.log('API Key exists:', !!apiKey)
+    console.log('API Key length:', apiKey?.length || 0)
+    
     const openaiResponse = await fetch('https://api.openai.com/v1/threads', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${Deno.env.get('OPENAI_API_KEY')}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
         'OpenAI-Beta': 'assistants=v2'
       },
       body: JSON.stringify({})
     })
 
+    console.log('OpenAI Response Status:', openaiResponse.status)
+    
     if (!openaiResponse.ok) {
-      throw new Error('Failed to create thread')
+      const errorText = await openaiResponse.text()
+      console.error('OpenAI Error:', errorText)
+      throw new Error(`Failed to create thread: ${openaiResponse.status} - ${errorText}`)
     }
 
     const thread = await openaiResponse.json()

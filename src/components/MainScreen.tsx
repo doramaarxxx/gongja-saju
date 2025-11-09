@@ -57,26 +57,6 @@ export default function MainScreen({ onStartFortune, onViewRecords, onViewSettin
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // 여러 이미지 경로 시도
-  const characterImagePaths = [
-    'characters/master.png',
-    'characters/master.jpg',
-    'master.png',
-    'master.jpg'
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [imageError, setImageError] = useState(false);
-
-  const handleImageError = () => {
-    if (currentImageIndex < characterImagePaths.length - 1) {
-      setCurrentImageIndex(currentImageIndex + 1);
-    } else {
-      setImageError(true);
-    }
-  };
-
-  const characterImageUrl = !imageError ? getImageUrl(characterImagePaths[currentImageIndex]) : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 flex flex-col relative overflow-hidden">
@@ -105,29 +85,13 @@ export default function MainScreen({ onStartFortune, onViewRecords, onViewSettin
           <div className="relative inline-block mb-6">
             {/* Character Avatar */}
             <div className="w-32 h-32 mx-auto mb-4 relative">
-              {characterImageUrl && !imageError ? (
-                <img 
-                  src={characterImageUrl}
-                  alt="공자 사주 마스터"
-                  className="w-full h-full object-cover rounded-full border-4 border-white/20 shadow-2xl"
-                  onError={handleImageError}
-                />
-              ) : (
-                /* 폴백 아이콘 */
-                <div className="w-full h-full bg-gradient-to-br from-amber-400 via-orange-500 to-red-500 rounded-full border-4 border-white/20 shadow-2xl flex items-center justify-center">
-                  <User className="w-16 h-16 text-white" />
-                </div>
-              )}
-              {/* Glow effect with character background */}
-              <div 
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400/30 to-pink-400/30 blur-xl"
-                style={{
-                  backgroundImage: `url(${masterCharacter})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundBlendMode: 'overlay'
-                }}
-              ></div>
+              <img 
+                src={masterCharacter}
+                alt="공자 사주 마스터"
+                className="w-full h-full object-cover rounded-full border-4 border-white/20 shadow-2xl relative z-10"
+              />
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400/30 to-pink-400/30 blur-xl"></div>
             </div>
             
             {/* Character speech bubble */}
