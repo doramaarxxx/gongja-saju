@@ -2,6 +2,8 @@ import { SajuInput, FortuneResult } from '../types/saju';
 
 export async function generateFortune(input: SajuInput): Promise<FortuneResult> {
   try {
+    console.log('Calling Edge Function with input:', input);
+    
     const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-saju`, {
       method: 'POST',
       headers: {
@@ -20,15 +22,19 @@ export async function generateFortune(input: SajuInput): Promise<FortuneResult> 
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Edge Function error:', errorText);
       throw new Error('Failed to generate fortune');
     }
 
     const result = await response.json();
+    console.log('Edge Function response:', result);
     return result;
   } catch (error) {
-    console.error('Error calling OpenAI API:', error);
+    console.error('Error calling Edge Function:', error);
     
     // 폴백: 기본 사주 결과 반환
+    console.log('Using fallback fortune');
     return getFallbackFortune(input);
   }
 }

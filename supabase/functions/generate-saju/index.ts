@@ -1,4 +1,8 @@
+// @ts-ignore: Deno runtime
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+
+// Deno runtime type declaration
+declare const Deno: any;
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
