@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Menu, Star, Sparkles, Heart, DollarSign, User } from 'lucide-react';
 import Sidebar from './Sidebar';
 import { getImageUrl } from '../lib/storage';
+import masterCharacter from '../assets/master-character.png';
 
 interface MainScreenProps {
   onStartFortune: () => void;
@@ -117,8 +118,16 @@ export default function MainScreen({ onStartFortune, onViewRecords, onViewSettin
                   <User className="w-16 h-16 text-white" />
                 </div>
               )}
-              {/* Glow effect */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400/30 to-pink-400/30 blur-xl"></div>
+              {/* Glow effect with character background */}
+              <div 
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-400/30 to-pink-400/30 blur-xl"
+                style={{
+                  backgroundImage: `url(${masterCharacter})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundBlendMode: 'overlay'
+                }}
+              ></div>
             </div>
             
             {/* Character speech bubble */}

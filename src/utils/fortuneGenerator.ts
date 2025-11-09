@@ -4,7 +4,7 @@ export async function generateFortune(input: SajuInput): Promise<FortuneResult> 
   try {
     console.log('Calling Edge Function with input:', input);
     
-    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-saju`, {
+    const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/swift-handler`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
